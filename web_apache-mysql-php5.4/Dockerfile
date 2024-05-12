@@ -8,6 +8,7 @@ COPY src /var/www/html/
 
 RUN echo 'deb [check-valid-until=no] http://mirrors.cloud.tencent.com/debian-archive/debian/ stretch main non-free contrib' > /etc/apt/sources.list \
 	&& echo 'deb-src [check-valid-until=no] http://mirrors.cloud.tencent.com/debian-archive/debian/ stretch main non-free contrib' >> /etc/apt/sources.list \
+	&& a2enmod rewrite \
 	&& apt-get update -y \
 	&& apt-get install --force-yes -y binutils mariadb-server \
 	&& docker-php-ext-install mysqli pdo_mysql

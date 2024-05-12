@@ -7,6 +7,7 @@ COPY src /var/www/html/
 
 
 RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/sources.list \
+	&& a2enmod rewrite \
 	&& apt-get update -y \
 	&& apt-get install -y mariadb-server \
 	&& docker-php-ext-install mysqli pdo_mysql
