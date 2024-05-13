@@ -1,4 +1,4 @@
-# CTFd_Docker_Template
+# CTF_Docker_Template
 
 一些适用于动态flag题目的docker部署模板
 

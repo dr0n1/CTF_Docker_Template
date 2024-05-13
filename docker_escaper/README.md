@@ -11,5 +11,5 @@ docker（deploy）-> qemu（flag）-> docker（attack）
 
 
 **注意事项**  
-1：不支持动态flag，请设定静态flag
+1：不支持动态flag，请设定静态flag  
 2：运行的时候注意手动指定kvm的映射(如果使用了kvm)
