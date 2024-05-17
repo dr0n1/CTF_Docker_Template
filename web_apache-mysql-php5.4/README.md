@@ -1,5 +1,11 @@
 ## web_apache-mysql-php5
 
+**详细版本**
+
+Apache/2.4.10 (Debian)  
+10.1.45-MariaDB-0+deb9u1 Debian 9.12  
+PHP 5.4.45 (cli)  
+
 **如何使用**
 
 
