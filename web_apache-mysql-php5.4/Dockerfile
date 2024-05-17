@@ -14,7 +14,7 @@ RUN echo 'deb [check-valid-until=no] http://mirrors.cloud.tencent.com/debian-arc
 	&& apt-get install --force-yes -y binutils mariadb-server mariadb-client \
 	&& docker-php-ext-install mysqli pdo_mysql
 
-RUN	cp /usr/src/php/php.ini-production /usr/local/etc/php/php.ini \
+RUN cp /usr/src/php/php.ini-production /usr/local/etc/php/php.ini \
 	&& sh -c 'mysqld_safe &' \
 	&& sleep 3s \
 	&& mysqladmin -uroot password 'root' \
