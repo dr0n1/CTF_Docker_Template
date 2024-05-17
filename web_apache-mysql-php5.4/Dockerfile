@@ -4,6 +4,7 @@ LABEL Organization="Rml" Author="dr0n1 <dr0n6666x@gmail.com>"
 
 COPY start.sh /start.sh
 COPY src /var/www/html/
+COPY data/data.sql /tmp/
 
 
 RUN echo 'deb [check-valid-until=no] http://mirrors.cloud.tencent.com/debian-archive/debian/ stretch main non-free contrib' > /etc/apt/sources.list \

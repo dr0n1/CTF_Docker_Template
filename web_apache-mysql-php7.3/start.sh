@@ -5,9 +5,9 @@ sleep 3
 service mariadb restart
 sleep 3
 
-if [ -f /var/www/html/db.sql ]; then
-	mysql -uroot -proot < /var/www/html/db.sql
-	rm -f /var/www/html/db.sql
+if [ -f /tmp/data.sql ]; then
+	mysql -uroot -proot < /tmp/data.sql
+	rm -f /tmp/data.sql
 fi
 
 #set flag

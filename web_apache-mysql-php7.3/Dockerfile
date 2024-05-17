@@ -4,13 +4,16 @@ LABEL Organization="Rml" Author="dr0n1 <dr0n6666x@gmail.com>"
 
 COPY start.sh /start.sh
 COPY src /var/www/html/
+COPY data/data.sql /tmp/
 
 
 RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/sources.list \
 	&& a2enmod rewrite \
 	&& apt-get update -y \
-	&& apt-get install -y mariadb-server \
-	&& docker-php-ext-install mysqli pdo_mysql
+	&& apt-get install -y libzip-dev libpng-dev libwebp-dev libjpeg-dev libfreetype-dev \
+	&& apt-get install -y default-mysql-client default-mysql-server \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+	&& docker-php-ext-install mysqli pdo_mysql zip gd
 
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
 	&& sh -c 'mysqld_safe &' \
