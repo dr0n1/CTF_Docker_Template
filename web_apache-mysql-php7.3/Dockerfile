@@ -2,9 +2,10 @@ FROM php:7.3-apache
 
 LABEL Organization="Rml" Author="dr0n1 <dr0n6666x@gmail.com>"
 
-COPY start.sh /start.sh
-COPY src /var/www/html/
+COPY config/start.sh /start.sh
+COPY config/php.ini /usr/local/etc/php/php.ini
 COPY data/data.sql /tmp/
+COPY src /var/www/html/
 
 
 RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/sources.list \
@@ -15,8 +16,7 @@ RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/source
 	&& docker-php-ext-configure gd --with-freetype-dir --with-jpeg-dir --with-webp-dir \
 	&& docker-php-ext-install mysqli pdo_mysql zip gd
 
-RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
-	&& sh -c 'mysqld_safe &' \
+RUN sh -c 'mysqld_safe &' \
 	&& sleep 3s \
 	&& mysqladmin -uroot password 'root' \
 	&& chmod +x /start.sh \
