@@ -5,7 +5,7 @@
 Apache/2.4.52 (Debian)  
 10.5.23-MariaDB-0+deb11u1 Debian 11  
 PHP 7.3.33 (cli)  
-PHP-ext：mysqli pdo_mysql zip gd exif
+PHP-ext：mysqli pdo_mysql zip gd exif gettext
 
 **如何使用**
 

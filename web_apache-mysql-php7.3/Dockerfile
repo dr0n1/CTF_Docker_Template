@@ -14,7 +14,7 @@ RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/source
 	&& apt-get install -y libzip-dev libwebp-dev libgd-dev libpng-dev libjpeg-dev libfreetype-dev \
 	&& apt-get install -y mariadb-server mariadb-client \
 	&& docker-php-ext-configure gd --with-freetype-dir --with-jpeg-dir --with-webp-dir \
-	&& docker-php-ext-install mysqli pdo_mysql zip gd exif
+	&& docker-php-ext-install mysqli pdo_mysql zip gd exif gettext
 
 RUN sh -c 'mysqld_safe &' \
 	&& sleep 3s \
