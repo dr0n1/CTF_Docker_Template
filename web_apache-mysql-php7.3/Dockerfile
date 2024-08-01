@@ -8,10 +8,10 @@ COPY data/data.sql /tmp/
 COPY src /var/www/html/
 
 
-RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/sources.list \
+RUN sed -i "s@http://deb.debian.org@http://mirrors.ustc.edu.cn@g" /etc/apt/sources.list \
 	&& a2enmod rewrite \
 	&& apt-get update -y \
-	&& apt-get install -y libzip-dev libwebp-dev libgd-dev libpng-dev libjpeg-dev libfreetype-dev \
+	&& apt-get install -y libzip-dev libwebp-dev libgd-dev libpng-dev libjpeg-dev libfreetype6-dev \
 	&& apt-get install -y mariadb-server mariadb-client \
 	&& docker-php-ext-configure gd --with-freetype-dir --with-jpeg-dir --with-webp-dir \
 	&& docker-php-ext-install mysqli pdo_mysql zip gd exif gettext
