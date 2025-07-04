@@ -1,6 +1,6 @@
 # CTF_Docker_Template
 
-一些适用于动态flag题目的docker部署模板  
+收集&创建&备份 一些CTF题目的docker部署模板  
 
 
 ## 注意事项
