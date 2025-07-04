@@ -18,9 +18,10 @@ else
     flag_value="flag{test}"
 fi
 
-echo "$flag_value" > /flag
-chmod 744 /flag
+# echo "$flag_value" > /flag
+#chmod 744 /flag
+sed -i "s/flag_here/$(echo $flag_value|base64)/g" /var/www/html/js/script.js
 
-cd /app
-flask run -h 0.0.0.0 -p 80
-#flask --debug run -h 0.0.0.0 -p 80
+service apache2 start
+
+tail -f /dev/null

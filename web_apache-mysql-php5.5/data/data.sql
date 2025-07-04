@@ -16,7 +16,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'admin', 'Lewiserii@1!');
+INSERT INTO `users` VALUES ('1', 'admin', 'xxxxxxxx');
 
 
 -- ----------------------------

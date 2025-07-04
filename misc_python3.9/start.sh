@@ -1,17 +1,28 @@
 #!/bin/sh
 
-echo $FLAG > /flag
-export FLAG=not_flag
-FLAG=not_flag
+rm -f /start.sh
 
-python3 /usr/local/apache2/htdocs/challenges.py
-
-if [ -f /usr/local/apache2/htdocs/requirements.txt ]; then
-    rm -rf /usr/local/apache2/htdocs/requirements.txt
+if [ "$DASFLAG" ]; then
+    flag_value="$DASFLAG"
+    export DASFLAG=not_flag
+    DASFLAG=not_flag
+elif [ "$FLAG" ]; then
+    flag_value="$FLAG"
+    export FLAG=not_flag
+    FLAG=not_flag
+elif [ "$GZCTF_FLAG" ]; then
+    flag_value="$GZCTF_FLAG"
+    export GZCTF_FLAG=not_flag
+    GZCTF_FLAG=not_flag
+else
+    flag_value="flag{test}"
 fi
 
-if [ -f /usr/local/apache2/htdocs/challenges.py ]; then
-    rm -rf /usr/local/apache2/htdocs/challenges.py
-fi
+echo "$flag_value" > /flag
+chmod 600 /flag
 
-python3 -m http.server 80  --directory /usr/local/apache2/htdocs/
+python3 /tmp/challenges.py
+
+rm -f /tmp/requirements.txt /tmp/challenges.py
+
+python3 -m http.server 80  --directory /tmp/

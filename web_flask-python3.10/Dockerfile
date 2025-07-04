@@ -13,7 +13,7 @@ RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list \
 	&& apt install -y libxml2-dev libxslt-dev libffi-dev musl-dev tk-dev tcl-dev gcc g++ make libtool libev-dev \
 	&& python -m pip install -U pip -i https://pypi.tuna.tsinghua.edu.cn/simple \
 	&& python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple flask \
-	&& python -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple \
+	&& python -m pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple \
 	&& rm -rf /app/requirements.txt \
 	&& chmod +x /start.sh
 

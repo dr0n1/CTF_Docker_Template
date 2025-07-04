@@ -1,4 +1,4 @@
-FROM php:5.4-apache
+FROM php:5.5-apache
 
 LABEL Organization="Rml" Author="dr0n1 <dr0n6666x@gmail.com>"
 

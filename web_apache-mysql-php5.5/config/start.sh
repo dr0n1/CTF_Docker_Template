@@ -2,6 +2,16 @@
 
 rm -rf /start.sh
 
+service mysql restart
+until mysqladmin ping &>/dev/null; do
+    sleep 1
+done
+
+if [ -f /tmp/data.sql ]; then
+	mysql -uroot -proot < /tmp/data.sql
+	rm -f /tmp/data.sql
+fi
+
 if [ "$DASFLAG" ]; then
     flag_value="$DASFLAG"
     export DASFLAG=not_flag
@@ -18,9 +28,10 @@ else
     flag_value="flag{test}"
 fi
 
-echo "$flag_value" > /flag
-chmod 744 /flag
+mysql -uroot -proot -e "update ctf.flag set flag='$flag_value';"
+# echo "$flag_value" > /flag
 
-cd /app
-flask run -h 0.0.0.0 -p 80
-#flask --debug run -h 0.0.0.0 -p 80
+service apache2 restart
+sleep 3
+
+tail -f /dev/null
