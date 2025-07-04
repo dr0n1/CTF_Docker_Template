@@ -1,1 +1,68 @@
+name: Publish template to Github Release
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  RELEASE_TAG: "single-template"
+  RELEASE_NAME: "单个模板下载"
+
+jobs:
+  deploy:
+    name: Zip & Publish 单个模板下载
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Ensure zip is installed
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip
+
+      - name: Zip each top‑level folder
+        run: |
+          rm -rf release
+          mkdir -p release
+          for dir in */ ; do
+            # 只处理非隐藏目录
+            if [[ -d "$dir" && "${dir:0:1}" != "." ]]; then
+              name="${dir%/}"
+              echo "→ Zipping folder: $name"
+              zip -rq "release/${name}.zip" "$dir"
+            fi
+          done
+
+      - name: Delete existing Release
+        uses: sgpublic/delete-release-action@v1.1
+        with:
+          release-drop: true
+          release-keep-count: -1
+          release-drop-tag: true
+          pre-release-drop: true
+          pre-release-keep-count: -1
+          pre-release-drop-tag: true
+          draft-drop: true
+          draft-drop-count: -1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create/Update Release & upload ZIPs
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.RELEASE_TAG }}
+          name: ${{ env.RELEASE_NAME }}
+          body: |
+            自动打包发布：包含项目根目录下所有子文件夹的 ZIP 压缩包。
+          allowUpdates: true
+          replacesArtifacts: true
+          artifactErrorsFailBuild: true
+          artifacts: "release/*.zip"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
