@@ -21,17 +21,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Ensure zip is installed
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y zip
-
       - name: Zip each top‑level folder
         run: |
           rm -rf release
           mkdir -p release
           for dir in */ ; do
-            # 只处理非隐藏目录，且排除 release/ 目录自身
             if [[ -d "$dir" && "${dir:0:1}" != "." && "${dir%/}" != "release" ]]; then
               name="${dir%/}"
               echo "→ Zipping folder: $name"
@@ -39,19 +33,32 @@ jobs:
             fi
           done
 
-      - name: Delete existing Release
-        uses: sgpublic/delete-release-action@v1.1
+      - name: Delete all existing assets from the Release
+        uses: actions/github-script@v6
         with:
-          release-drop: true
-          release-keep-count: -1
-          release-drop-tag: true
-          pre-release-drop: true
-          pre-release-keep-count: -1
-          pre-release-drop-tag: true
-          draft-drop: true
-          draft-drop-count: -1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const tag = process.env.RELEASE_TAG;
+            // 获取 Release（若不存在，则跳过删除）
+            const resp = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag
+            }).catch(() => null);
+            if (!resp) {
+              core.info(`No existing Release with tag '${tag}', skip asset deletion.`);
+              return;
+            }
+            const release = resp.data;
+            // 删除所有 asset
+            for (const asset of release.assets) {
+              core.info(`Deleting asset: ${asset.name}`);
+              await github.rest.repos.deleteReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                asset_id: asset.id
+              });
+            }
 
       - name: Create/Update Release & upload ZIPs
         uses: ncipollo/release-action@v1
