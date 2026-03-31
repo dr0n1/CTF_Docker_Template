@@ -7,9 +7,11 @@ COPY config/php.ini /usr/local/etc/php/php.ini
 COPY data/data.sql /tmp/
 COPY src /var/www/html/
 
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN echo 'deb [check-valid-until=no] http://mirrors.cloud.tencent.com/debian-archive/debian/ stretch main non-free contrib' > /etc/apt/sources.list \
-	&& echo 'deb-src [check-valid-until=no] http://mirrors.cloud.tencent.com/debian-archive/debian/ stretch main non-free contrib' >> /etc/apt/sources.list \
+RUN echo 'deb [trusted=yes check-valid-until=no] http://archive.debian.org/debian jessie main contrib non-free' > /etc/apt/sources.list \
+	&& echo 'deb-src [check-valid-until=no] http://archive.debian.org/debian jessie main contrib non-free' >> /etc/apt/sources.list \
+	&& cd /usr/lib/apt/methods && ( [ -e https ] || ln -s http https ) \
 	&& a2enmod rewrite \
 	&& apt-get update -y \
 	&& apt-get install --force-yes -y libzip-dev libwebp-dev libgd-dev libpng-dev libjpeg-dev \
